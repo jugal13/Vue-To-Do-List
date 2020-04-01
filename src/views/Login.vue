@@ -77,6 +77,7 @@ export default {
   mounted: function() {
     let currentUser = JSON.parse(localStorage.getItem("user"));
     if (currentUser) {
+      this.$store.commit("updateUser", currentUser);
       this.$router.push("home");
     }
   },
