@@ -46,6 +46,7 @@ export default new Vuex.Store({
 
     async loginWithEmailAndPassword({ commit }, payload) {
       commit("setBusy", true);
+      let userCredentials;
       try {
         userCredentials = await auth.signInWithEmailAndPassword(
           payload.email,
