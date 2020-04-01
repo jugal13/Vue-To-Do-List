@@ -42,7 +42,7 @@
         </v-container>
       </v-flex>
     </v-layout>
-    <v-snackbar v-model="snackbar">
+    <v-snackbar color="error" v-model="snackbar">
       {{ snackbarText }}
       <v-btn text @click="snackbar = false">Close</v-btn>
     </v-snackbar>
