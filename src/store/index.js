@@ -46,10 +46,16 @@ export default new Vuex.Store({
 
     async loginWithEmailAndPassword({ commit }, payload) {
       commit("setBusy", true);
-      let userCredentials = await auth.signInWithEmailAndPassword(
-        payload.email,
-        payload.password
-      );
+      try {
+        userCredentials = await auth.signInWithEmailAndPassword(
+          payload.email,
+          payload.password
+        );
+      } catch (error) {
+        commit("setBusy", false);
+        console.log(error);
+        throw error;
+      }
       localStorage.setItem("user", JSON.stringify(userCredentials.user));
       commit("updateUser", userCredentials.user);
       commit("setBusy", false);

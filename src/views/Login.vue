@@ -87,10 +87,15 @@ export default {
           email: this.email,
           password: this.password
         };
-
-        this.$store.dispatch("loginWithEmailAndPassword", data).then(() => {
-          this.$router.push("home");
-        });
+        this.$store
+          .dispatch("loginWithEmailAndPassword", data)
+          .then(() => {
+            this.$router.push("home");
+          })
+          .catch(error => {
+            this.snackbar = true;
+            this.snackbarText = error.message;
+          });
       } else {
         this.snackbarText = "Email or password cannot be empty";
         this.snackbar = true;
