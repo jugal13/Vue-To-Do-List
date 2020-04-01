@@ -10,7 +10,8 @@ export default new Vuex.Store({
   state: {
     user: null,
     busy: false,
-    toDoItems: []
+    toDoItems: [],
+    postSubscription: nullƒ
   },
 
   getters: {
@@ -39,6 +40,7 @@ export default new Vuex.Store({
 
   actions: {
     async logout({ commit }) {
+      await postSubscription();
       await auth.signOut();
       localStorage.removeItem("user");
       commit("logoutUser");
@@ -83,7 +85,8 @@ export default new Vuex.Store({
     async getItems(context) {
       context.commit("setBusy", true);
       let items;
-      db.collection("todos")
+      context.state.postSubscription = db
+        .collection("todos")
         .where("userId", "==", context.state.user.uid)
         .orderBy("createdAt", "desc")
         .onSnapshot(snapshot => {
@@ -108,7 +111,10 @@ export default new Vuex.Store({
     },
 
     async deleteItem({ commit }, id) {
-      let result = await db.collection("todos").doc(id).delete();
+      let result = await db
+        .collection("todos")
+        .doc(id)
+        .delete();
     }
   }
 });
