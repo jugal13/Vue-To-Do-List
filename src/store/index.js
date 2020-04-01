@@ -11,7 +11,7 @@ export default new Vuex.Store({
     user: null,
     busy: false,
     toDoItems: [],
-    postSubscription: nullƒ
+    postSubscription: null
   },
 
   getters: {
@@ -39,11 +39,12 @@ export default new Vuex.Store({
   },
 
   actions: {
-    async logout({ commit }) {
-      await postSubscription();
+    async logout(context) {
+      let unsubscribe = context.state.postSubscription;
+      await unsubscribe();
       await auth.signOut();
       localStorage.removeItem("user");
-      commit("logoutUser");
+      context.commit("logoutUser");
     },
 
     async loginWithEmailAndPassword({ commit }, payload) {
