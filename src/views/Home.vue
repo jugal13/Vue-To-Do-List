@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-container fluid>
-      <v-layout>
+      <v-layout justify-center>
         <v-flex row justify-center align-center>
           <v-card width="300">
             <v-container>
@@ -19,7 +19,7 @@
       </v-layout>
     </v-container>
     <v-container fluid v-for="(eachItem, index) in listOfItems" :key="index">
-      <v-layout>
+      <v-layout justify-center>
         <v-flex row justify-center align-center>
           <v-card width="300">
             <v-container fluid>

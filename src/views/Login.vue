@@ -1,6 +1,6 @@
 <template>
   <v-container fill-height>
-    <v-layout>
+    <v-layout justify-center>
       <v-flex row justify-center align-center>
         <v-container fluid v-if="this.$store.getters.getBusy">
           <v-flex row justify-center>
@@ -8,7 +8,7 @@
           </v-flex>
         </v-container>
         <v-container fluid v-else>
-          <v-layout>
+          <v-layout justify-center>
             <v-flex row justify-center align-center>
               <v-card width="300">
                 <v-card-title class="justify-center">To Do List</v-card-title>
