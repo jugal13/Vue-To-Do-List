@@ -24,7 +24,7 @@
           <v-card width="300">
             <v-container fluid>
               <v-layout align-center>
-                {{ eachItem.text }}
+                <span v-bind:class="{ 'completed-text': eachItem.completed }">{{ eachItem.text }}</span>
                 <v-spacer></v-spacer>
                 <v-btn text small min-width="0" width="40" @click="openDialog(eachItem)">
                   <v-icon small>mdi-pencil</v-icon>
@@ -41,6 +41,7 @@
               <v-container fluid>
                 <v-form>
                   <v-text-field v-model="editedItem.text"></v-text-field>
+                  <v-checkbox v-model="editedItem.completed" label="Completed"></v-checkbox>
                 </v-form>
               </v-container>
               <v-card-actions>
@@ -64,7 +65,8 @@ export default {
     edit: false,
     editedItem: {
       id: "",
-      text: ""
+      text: "",
+      completed: false
     }
   }),
   computed: {
@@ -77,30 +79,35 @@ export default {
   },
   methods: {
     createItem() {
-      let data = {
+      const data = {
+        completed: false,
+        createdAt: Date.now(),
         userId: this.$store.state.user.uid,
-        text: this.item,
-        createdAt: Date.now()
+        text: this.item
       };
       this.$store.dispatch("addItem", data);
       this.item = "";
     },
 
     openDialog(data) {
+      console.log(data);
       this.editedItem.id = data.id;
       this.editedItem.text = data.text;
+      this.editedItem.completed = data.completed;
       this.edit = true;
     },
 
     updateData(item) {
       let data = {
         id: this.editedItem.id,
-        text: this.editedItem.text
+        text: this.editedItem.text,
+        completed: this.editedItem.completed
       };
       this.$store.dispatch("updateItem", data);
       this.editedItem = {
         id: "",
-        text: ""
+        text: "",
+        completed: false
       };
       this.edit = false;
     },
@@ -112,3 +119,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.completed-text {
+  text-decoration: line-through;
+}
+</style>

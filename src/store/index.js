@@ -8,16 +8,16 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: null,
+    user: JSON.parse(localStorage.getItem("user")),
     busy: false,
     toDoItems: [],
-    postSubscription: null
+    postSubscription: null,
   },
 
   getters: {
-    getBusy: state => {
+    getBusy: (state) => {
       return state.busy;
-    }
+    },
   },
 
   mutations: {
@@ -35,7 +35,7 @@ export default new Vuex.Store({
 
     setItems(state, value) {
       state.toDoItems = value;
-    }
+    },
   },
 
   actions: {
@@ -90,10 +90,14 @@ export default new Vuex.Store({
         .collection("todos")
         .where("userId", "==", context.state.user.uid)
         .orderBy("createdAt", "desc")
-        .onSnapshot(snapshot => {
+        .onSnapshot((snapshot) => {
           items = [];
-          snapshot.forEach(document => {
-            items.push({ id: document.id, text: document.data().text });
+          snapshot.forEach((document) => {
+            items.push({
+              id: document.id,
+              text: document.data().text,
+              completed: document.data().completed,
+            });
           });
           context.commit("setItems", items);
         });
@@ -108,14 +112,11 @@ export default new Vuex.Store({
       let result = await db
         .collection("todos")
         .doc(data.id)
-        .update({ text: data.text });
+        .update({ text: data.text, completed: data.completed });
     },
 
     async deleteItem({ commit }, id) {
-      let result = await db
-        .collection("todos")
-        .doc(id)
-        .delete();
-    }
-  }
+      let result = await db.collection("todos").doc(id).delete();
+    },
+  },
 });
