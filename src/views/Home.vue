@@ -35,25 +35,25 @@
               </v-layout>
             </v-container>
           </v-card>
-          <v-dialog v-model="edit" width="300">
-            <v-card width="300">
-              <v-card-title>Edit Item</v-card-title>
-              <v-container fluid>
-                <v-form>
-                  <v-text-field v-model="editedItem.text"></v-text-field>
-                  <v-checkbox v-model="editedItem.completed" label="Completed"></v-checkbox>
-                </v-form>
-              </v-container>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn text color="green" v-on:click="edit = false">Cancel</v-btn>
-                <v-btn text color="green" v-on:click="updateData(eachItem)">Update</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
         </v-flex>
       </v-layout>
     </v-container>
+    <v-dialog v-model="edit" width="300">
+      <v-card width="300">
+        <v-card-title>Edit Item</v-card-title>
+        <v-container fluid>
+          <v-form>
+            <v-text-field v-model="editedItem.text"></v-text-field>
+            <v-checkbox v-model="editedItem.completed" label="Completed"></v-checkbox>
+          </v-form>
+        </v-container>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text color="green" v-on:click="edit = false">Cancel</v-btn>
+          <v-btn text color="green" v-on:click="updateData(eachItem)">Update</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
