@@ -24,12 +24,26 @@
           <v-card width="300">
             <v-container fluid>
               <v-layout align-center>
-                <span v-bind:class="{ 'completed-text': eachItem.completed }">{{ eachItem.text }}</span>
+                <span v-bind:class="{ 'completed-text': eachItem.completed }">{{
+                  eachItem.text
+                }}</span>
                 <v-spacer></v-spacer>
-                <v-btn text small min-width="0" width="40" @click="openDialog(eachItem)">
+                <v-btn
+                  text
+                  small
+                  min-width="0"
+                  width="40"
+                  @click="openDialog(eachItem)"
+                >
                   <v-icon small>mdi-pencil</v-icon>
                 </v-btn>
-                <v-btn text small min-width="0" width="40" v-on:click="deleteData(eachItem)">
+                <v-btn
+                  text
+                  small
+                  min-width="0"
+                  width="40"
+                  v-on:click="deleteData(eachItem)"
+                >
                   <v-icon small>mdi-delete</v-icon>
                 </v-btn>
               </v-layout>
@@ -44,13 +58,18 @@
         <v-container fluid>
           <v-form>
             <v-text-field v-model="editedItem.text"></v-text-field>
-            <v-checkbox v-model="editedItem.completed" label="Completed"></v-checkbox>
+            <v-checkbox
+              v-model="editedItem.completed"
+              label="Completed"
+            ></v-checkbox>
           </v-form>
         </v-container>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text color="green" v-on:click="edit = false">Cancel</v-btn>
-          <v-btn text color="green" v-on:click="updateData(eachItem)">Update</v-btn>
+          <v-btn text color="green" v-on:click="updateData(eachItem)"
+            >Update</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -63,19 +82,20 @@ export default {
   data: () => ({
     item: "",
     edit: false,
+    postSubscription: null,
     editedItem: {
       id: "",
       text: "",
-      completed: false
-    }
+      completed: false,
+    },
   }),
   computed: {
-    listOfItems: function() {
+    listOfItems: function () {
       return this.$store.state.toDoItems;
-    }
+    },
   },
   mounted() {
-    this.$store.dispatch("getItems");
+    this.postSubscription = this.$store.dispatch("getItems");
   },
   methods: {
     createItem() {
@@ -83,7 +103,7 @@ export default {
         completed: false,
         createdAt: Date.now(),
         userId: this.$store.state.user.uid,
-        text: this.item
+        text: this.item,
       };
       this.$store.dispatch("addItem", data);
       this.item = "";
@@ -101,13 +121,13 @@ export default {
       let data = {
         id: this.editedItem.id,
         text: this.editedItem.text,
-        completed: this.editedItem.completed
+        completed: this.editedItem.completed,
       };
       this.$store.dispatch("updateItem", data);
       this.editedItem = {
         id: "",
         text: "",
-        completed: false
+        completed: false,
       };
       this.edit = false;
     },
@@ -115,8 +135,11 @@ export default {
     deleteData(item) {
       let data = item.id;
       this.$store.dispatch("deleteItem", data);
-    }
-  }
+    },
+  },
+  beforeDestroy() {
+    postSubscription();
+  },
 };
 </script>
 

@@ -11,7 +11,6 @@ export default new Vuex.Store({
     user: JSON.parse(localStorage.getItem("user")),
     busy: false,
     toDoItems: [],
-    postSubscription: null,
   },
 
   getters: {
@@ -86,7 +85,7 @@ export default new Vuex.Store({
     async getItems(context) {
       context.commit("setBusy", true);
       let items;
-      context.state.postSubscription = db
+      let postSubscription = db
         .collection("todos")
         .where("userId", "==", context.state.user.uid)
         .orderBy("createdAt", "desc")
@@ -102,21 +101,22 @@ export default new Vuex.Store({
           context.commit("setItems", items);
         });
       context.commit("setBusy", false);
+      return postSubscription;
     },
 
     async addItem({ commit }, data) {
-      let result = await db.collection("todos").add(data);
+      await db.collection("todos").add(data);
     },
 
     async updateItem({ commit }, data) {
-      let result = await db
+      await db
         .collection("todos")
         .doc(data.id)
         .update({ text: data.text, completed: data.completed });
     },
 
     async deleteItem({ commit }, id) {
-      let result = await db.collection("todos").doc(id).delete();
+      await db.collection("todos").doc(id).delete();
     },
   },
 });
