@@ -39,8 +39,6 @@ export default new Vuex.Store({
 
   actions: {
     async logout(context) {
-      let unsubscribe = context.state.postSubscription;
-      await unsubscribe();
       await auth.signOut();
       localStorage.removeItem("user");
       context.commit("logoutUser");
